@@ -3,19 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Life Progress Bar is an immersive life calendar that lets you see time as a finite wall of weeks."
-    />
+    <meta name="description" data-i18n="meta.description" content="Life Progress Bar is an immersive life calendar that lets you see time as a finite wall of weeks." />
     <meta name="theme-color" content="#070707" />
-    <meta property="og:title" content="Life Progress Bar" />
-    <meta
-      property="og:description"
-      content="If life were a countdown, how much would you have left?"
-    />
+    <meta property="og:title" data-i18n="meta.ogTitle" content="Life Progress Bar" />
+    <meta property="og:description" data-i18n="meta.ogDesc" content="If life were a countdown, how much would you have left?" />
     <title>Life Progress Bar</title>
     <link rel="stylesheet" href="./src/styles.css" />
-    <script type="module" src="./src/main.js"></script>
   </head>
   <body>
     <div class="ambient" aria-hidden="true">
@@ -25,50 +18,54 @@
       <canvas id="particleCanvas"></canvas>
     </div>
 
+    <!-- Language Switcher -->
+    <div class="lang-switch" aria-label="Language">
+      <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="zh">中文</button>
+    </div>
+
     <main id="app" class="app shell" data-stage="intro">
       <section class="intro-view" aria-labelledby="introTitle">
-        <p class="eyebrow">Life Progress Bar</p>
-        <h1 id="introTitle">If life were a countdown,<br />how much would you have left?</h1>
+        <p class="eyebrow" data-i18n="intro.eyebrow">Life Progress Bar</p>
+        <h1 id="introTitle" data-i18n="intro.title">If life were a countdown,<br />how much would you have left?</h1>
         <form class="entry-form" id="entryForm">
           <label>
-            <span>Date of birth</span>
-            <div class="birth-selects" aria-label="Date of birth">
+            <span data-i18n="intro.form.birth">Date of birth</span>
+            <div class="birth-selects" data-i18n-attr="aria-label:intro.form.birth" aria-label="Date of birth">
               <select id="birthYear" name="birthYear" required>
-                <option value="">Year</option>
+                <option value="" data-i18n="intro.form.month">Year</option>
               </select>
               <select id="birthMonth" name="birthMonth" required>
-                <option value="">Month</option>
+                <option value="" data-i18n="intro.form.month">Month</option>
               </select>
               <select id="birthDay" name="birthDay" required>
-                <option value="">Day</option>
+                <option value="" data-i18n="intro.form.day">Day</option>
               </select>
             </div>
           </label>
           <label>
-            <span>Country or region</span>
+            <span data-i18n="intro.form.country">Country or region</span>
             <select id="countrySelect" name="country" required>
-              <option value="">Detecting your location...</option>
+              <option value="" data-i18n="intro.form.countryDefault">Detecting your location...</option>
             </select>
           </label>
-          <button class="primary-action" type="submit">See my life progress</button>
+          <button class="primary-action" type="submit" data-i18n="intro.form.submit">See my life progress</button>
           <p class="form-note" id="formNote" role="status"></p>
         </form>
       </section>
 
       <section class="result-view" id="resultView" aria-live="polite">
-        <div class="sound-dock" aria-label="Ambient sound">
-          <button type="button" data-sound="off" class="is-active">Silent</button>
-          <button type="button" data-sound="rain">Rain</button>
-          <button type="button" data-sound="wind">Wind</button>
-          <button type="button" data-sound="ocean">Ocean</button>
+        <div class="sound-dock" data-i18n-attr="aria-label:result.sound.ariaLabel" aria-label="Ambient sound">
+          <button type="button" data-sound="off" class="is-active" data-i18n="result.sound.silent">Silent</button>
+          <button type="button" data-sound="rain" data-i18n="result.sound.rain">Rain</button>
+          <button type="button" data-sound="wind" data-i18n="result.sound.wind">Wind</button>
+          <button type="button" data-sound="ocean" data-i18n="result.sound.ocean">Ocean</button>
         </div>
 
         <header class="result-top">
           <div>
             <p class="eyebrow" id="countrySource">UN WPP 2024 estimate</p>
-            <h2>
-              A finite wall of weeks.
-            </h2>
+            <h2 data-i18n="result.header.title">A finite wall of weeks.</h2>
           </div>
         </header>
 
@@ -76,12 +73,12 @@
           <section class="calendar-section" aria-labelledby="calendarTitle">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">Life Calendar</p>
-                <h3 id="calendarTitle">Each dot is one week.</h3>
+                <p class="eyebrow" data-i18n="result.calendar.eyebrow">Life Calendar</p>
+                <h3 id="calendarTitle" data-i18n="result.calendar.title">Each dot is one week.</h3>
               </div>
             </div>
             <div class="calendar-wrap">
-              <div class="week-grid" id="weekGrid" aria-label="Each dot represents one week of life"></div>
+              <div class="week-grid" id="weekGrid" data-i18n-attr="aria-label:result.calendar.ariaLabel" aria-label="Each dot represents one week of life"></div>
             </div>
             <div class="calendar-footer">
               <p class="calendar-caption" id="calendarCaption"></p>
@@ -89,11 +86,11 @@
             </div>
           </section>
 
-          <section class="progress-hero" aria-label="Life progress">
+          <section class="progress-hero" data-i18n-attr="aria-label:result.progress.ariaLabel" aria-label="Life progress">
             <div class="progress-copy">
-              <p>You have lived</p>
+              <p data-i18n="result.progress.youHaveLived">You have lived</p>
               <strong><span id="progressPercent">0</span>%</strong>
-              <p>of this statistical life.</p>
+              <p data-i18n="result.progress.ofThisLife">of this statistical life.</p>
             </div>
             <div class="life-line" role="progressbar" aria-label="Life progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="life-line-track">
@@ -101,51 +98,51 @@
                 <span class="life-line-now"></span>
               </div>
               <div class="life-line-labels" aria-hidden="true">
-                <span>birth</span>
-                <span>expected horizon</span>
+                <span data-i18n="result.progress.birth">birth</span>
+                <span data-i18n="result.progress.expectedHorizon">expected horizon</span>
               </div>
             </div>
             <p class="progress-basis" id="progressBasis"></p>
           </section>
         </div>
 
-        <section class="metrics" aria-label="Remaining life moments">
+        <section class="metrics" data-i18n-attr="aria-label:result.metrics.ariaLabel" aria-label="Remaining life moments">
           <article class="metric-card">
-            <span>you may have</span>
+            <span data-i18n="result.metrics.weekendsLabel">you may have</span>
             <strong id="weekendsLeft">0</strong>
-            <span>weekends left.</span>
+            <span data-i18n="result.metrics.weekendsUnit">weekends left.</span>
           </article>
           <article class="metric-card">
-            <span>perhaps</span>
+            <span data-i18n="result.metrics.sunsetsLabel">perhaps</span>
             <strong id="sunsetsLeft">0</strong>
-            <span>sunsets left.</span>
+            <span data-i18n="result.metrics.sunsetsUnit">sunsets left.</span>
           </article>
           <article class="metric-card">
-            <span>roughly</span>
+            <span data-i18n="result.metrics.summersLabel">roughly</span>
             <strong id="summersLeft">0</strong>
-            <span>summers left.</span>
+            <span data-i18n="result.metrics.summersUnit">summers left.</span>
           </article>
           <article class="metric-card">
-            <span>about</span>
+            <span data-i18n="result.metrics.worldCupsLabel">about</span>
             <strong id="worldCupsLeft">0</strong>
-            <span>FIFA World Cups left.</span>
+            <span data-i18n="result.metrics.worldCupsUnit">FIFA World Cups left.</span>
           </article>
           <article class="metric-card">
-            <span>maybe</span>
+            <span data-i18n="result.metrics.decadesLabel">maybe</span>
             <strong id="decadesLeft">0</strong>
-            <span>decades left.</span>
+            <span data-i18n="result.metrics.decadesUnit">decades left.</span>
           </article>
           <article class="metric-card">
-            <span>possibly</span>
+            <span data-i18n="result.metrics.halleysLabel">possibly</span>
             <strong id="halleysCometLeft">0</strong>
-            <span>visits from Halley's Comet.</span>
+            <span data-i18n="result.metrics.halleysUnit">visits from Halley's Comet.</span>
           </article>
         </section>
 
-        <section class="timeline-section" aria-label="Your life against world history">
+        <section class="timeline-section" data-i18n-attr="aria-label:result.timeline.ariaLabel" aria-label="Your life against world history">
           <div class="tl-header">
-            <p class="eyebrow">Your Life in History</p>
-            <h3>The world you lived through.</h3>
+            <p class="eyebrow" data-i18n="result.timeline.eyebrow">Your Life in History</p>
+            <h3 data-i18n="result.timeline.title">The world you lived through.</h3>
           </div>
           <div class="timeline-container" id="timelineContainer"></div>
         </section>
@@ -153,10 +150,10 @@
         <footer class="closing">
           <blockquote id="closingLine">Time does not disappear suddenly. It goes dim.</blockquote>
           <div class="footer-actions">
-            <button class="ghost-action" id="posterButton" type="button">Generate share poster</button>
-            <button class="text-action" id="restartButton" type="button">Start again</button>
+            <button class="ghost-action" id="posterButton" type="button" data-i18n="result.poster.modal.eyebrow">Generate share poster</button>
+            <button class="text-action" id="restartButton" type="button" data-i18n="intro.form.restart">Start again</button>
           </div>
-          <p class="source-note">
+          <p class="source-note" data-i18n="result.closing.sourceNote">
             Life expectancy uses UN World Population Prospects 2024 / UNData, indicator:
             life expectancy at birth, both sexes. This is a contemplative estimate, not a
             prediction.
@@ -166,19 +163,22 @@
         <div class="poster-modal" id="posterModal" hidden role="dialog" aria-modal="true" aria-labelledby="posterTitle">
           <div class="poster-panel">
             <div class="poster-copy">
-              <p class="eyebrow">Share poster</p>
-              <h3 id="posterTitle">A quiet invitation for someone else.</h3>
+              <p class="eyebrow" data-i18n="result.poster.modal.eyebrow">Share poster</p>
+              <h3 id="posterTitle" data-i18n="result.poster.modal.title">A quiet invitation for someone else.</h3>
             </div>
-            <img id="posterPreview" alt="Generated life progress share poster preview" />
+            <img id="posterPreview" data-i18n-attr="alt:result.poster.modal.imgAlt" alt="Generated life progress share poster preview" />
             <div class="poster-actions">
-              <button class="ghost-action" id="posterDownloadButton" type="button">Download</button>
-              <button class="ghost-action" id="posterShareButton" type="button">Share</button>
-              <button class="text-action" id="posterCloseButton" type="button">Close</button>
+              <button class="ghost-action" id="posterDownloadButton" type="button" data-i18n="result.poster.modal.download">Download</button>
+              <button class="ghost-action" id="posterShareButton" type="button" data-i18n="result.poster.modal.share">Share</button>
+              <button class="text-action" id="posterCloseButton" type="button" data-i18n="result.poster.modal.close">Close</button>
             </div>
             <p class="source-note" id="posterShareNote"></p>
           </div>
         </div>
       </section>
     </main>
+
+    <script src="./src/i18n.js"></script>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>

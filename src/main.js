@@ -17,80 +17,19 @@ const lifeExpectancy = [
   { label: "Brazil", iso3: "BRA", expectancyYears: 76.8, sourceYear: 2024, aliases: ["brasil"] },
 ];
 
-const quotes = [
-  "A life is not counted in years, but in chances.",
-  "Time does not disappear suddenly. It goes dim.",
-  "Some summers have already happened for the last time.",
-  "What remains is not time. It is number.",
-  "You thought there would be more years. There are only more times.",
-  "The calendar does not move. We move through it.",
-  "One day, an ordinary evening becomes part of the archive.",
-  "The quietest truth is that every week has a border.",
-];
-
-const posterQuotes = [
-  "Some summers have already happened for the last time.",
-  "Time does not disappear suddenly. It goes dim.",
-  "You thought there would be more years. There are only more times.",
-  "The quietest truth is that every week has a border.",
-  "One day, an ordinary evening becomes part of the archive.",
-  "What remains is not time. It is number.",
-  "The calendar does not move. We move through it.",
-  "A life is measured not in years, but in the moments that take your breath away.",
-];
-
-const posterCtas = [
-  "See your life in weeks.",
-  "Everyone should see their life calendar at least once.",
-  "How many weeks do you have left?",
-  "Most people have never truly seen their own time.",
-  "Step inside the wall and see how time glows.",
-  "Your entire life, in tiny dots.",
-];
-
-const worldEvents = [
-  { year: 2025, title: "AI agents emerged", desc: "Software began to write, code, and think alongside humans.", cat: "tech" },
-  { year: 2022, title: "ChatGPT launched", desc: "AI entered everyday conversation for the first time.", cat: "tech" },
-  { year: 2020, title: "A global pandemic", desc: "Much of the world stayed home. Everything paused.", cat: "world" },
-  { year: 2019, title: "First black hole image", desc: "Humanity saw the shadow of a black hole for the first time.", cat: "science" },
-  { year: 2016, title: "Brexit", desc: "The United Kingdom voted to leave the European Union.", cat: "world" },
-  { year: 2012, title: "Curiosity landed on Mars", desc: "A rover began sending back images from another planet.", cat: "science" },
-  { year: 2010, title: "Instagram launched", desc: "The age of visual social media began.", cat: "tech" },
-  { year: 2008, title: "Bitcoin was born", desc: "A new idea of money entered the world.", cat: "tech" },
-  { year: 2007, title: "iPhone launched", desc: "The internet entered every human hand.", cat: "tech" },
-  { year: 2005, title: "YouTube went online", desc: "Anyone could now broadcast to the world.", cat: "tech" },
-  { year: 2004, title: "Facebook went global", desc: "A social network began connecting the planet.", cat: "tech" },
-  { year: 2001, title: "September 11", desc: "The world changed overnight.", cat: "world" },
-  { year: 1998, title: "Google was founded", desc: "A garage startup began organizing the world's information.", cat: "tech" },
-  { year: 1997, title: "Deep Blue won", desc: "A machine defeated the world chess champion.", cat: "tech" },
-  { year: 1995, title: "The web went public", desc: "The internet arrived in ordinary homes.", cat: "tech" },
-  { year: 1991, title: "The World Wide Web", desc: "A new digital universe was born.", cat: "tech" },
-  { year: 1989, title: "The Berlin Wall fell", desc: "The Cold War quietly ended.", cat: "world" },
-  { year: 1986, title: "Chernobyl", desc: "A nuclear disaster sent a warning to the world.", cat: "world" },
-  { year: 1981, title: "The first PC", desc: "The personal computer arrived on desks.", cat: "tech" },
-  { year: 1977, title: "Star Wars premiered", desc: "Cinema — and what it could be — changed forever.", cat: "culture" },
-  { year: 1969, title: "Moon landing", desc: "Humans walked on another world for the first time.", cat: "science" },
-  { year: 1964, title: "The Beatles in America", desc: "Popular music was transformed overnight.", cat: "culture" },
-  { year: 1961, title: "First human in space", desc: "Yuri Gagarin orbited the Earth alone.", cat: "science" },
-  { year: 1957, title: "Sputnik launched", desc: "The Space Age began with a small beeping sphere.", cat: "science" },
-  { year: 1953, title: "DNA discovered", desc: "The code of life was cracked open.", cat: "science" },
-  { year: 1945, title: "World War II ended", desc: "The United Nations was established. Peace began.", cat: "world" },
-];
+// i18n helpers (fall back to raw key if i18n.js hasn't loaded)
+const t = (k, p) => (window.__t ? window.__t(k, p) : k);
+const gEvents = () => (window.__getWorldEvents ? window.__getWorldEvents() : []);
+const gQuotes = () => (window.__getQuotes ? window.__getQuotes() : []);
+const gPosterQuotes = () => (window.__getPosterQuotes ? window.__getPosterQuotes() : []);
+const gPersonalContext = () => (window.__getPersonalContext ? window.__getPersonalContext() : []);
 
 function personalContext(age) {
-  if (age < 0) return "The world was preparing for you.";
-  if (age <= 1) return "You had just arrived.";
-  if (age <= 5) return "You were discovering the world for the first time.";
-  if (age <= 9) return "You were learning how everything works.";
-  if (age <= 12) return "You were beginning to find your own voice.";
-  if (age <= 15) return "You were becoming yourself.";
-  if (age <= 18) return "You were about to step into the wider world.";
-  if (age <= 22) return "You were building a life of your own.";
-  if (age <= 28) return "You were finding your place in the world.";
-  if (age <= 35) return "You were deep in the middle of things.";
-  if (age <= 45) return "You were seeing the world more clearly.";
-  if (age <= 55) return "You had lived enough to know what matters.";
-  return "You had seen the world turn many times.";
+  const contexts = gPersonalContext();
+  for (const ctx of contexts) {
+    if (age <= ctx.max) return ctx.text;
+  }
+  return "";
 }
 
 const state = {
@@ -139,7 +78,7 @@ const elements = {
 
 function mapEventsToLife(birthDate, currentAge) {
   const birthYear = birthDate.getFullYear();
-  return worldEvents
+  return gEvents()
     .filter((event) => event.year <= new Date().getFullYear())
     .map((event) => {
       const age = event.year - birthYear;
@@ -193,11 +132,11 @@ function renderTimeline(events, birthDate, currentAge) {
     const ageTag = document.createElement("span");
     ageTag.className = "tl-age";
     if (event.age < 0) {
-      ageTag.textContent = `${Math.abs(event.age)} yr before`;
+      ageTag.textContent = t("result.timeline.yrBefore", { n: Math.abs(event.age) });
     } else if (event.age === 0) {
-      ageTag.textContent = "that year";
+      ageTag.textContent = t("result.timeline.thatYear");
     } else {
-      ageTag.textContent = `age ${event.age}`;
+      ageTag.textContent = t("result.timeline.agePrefix", { age: event.age });
     }
     topRow.appendChild(ageTag);
 
@@ -227,6 +166,22 @@ async function detectCountryByIP() {
     const data = await resp.json();
     const code = (data.country_code || "").toUpperCase();
     const name = (data.country_name || "").trim();
+
+    // Auto-set language for Chinese users (unless URL param overrides)
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasUrlLang = urlParams.has("lang");
+    if (code === "CN" && !hasUrlLang) {
+      try {
+        const stored = localStorage.getItem("life-progress-lang");
+        if (!stored || stored === "zh") {
+          if (window.__setLang) window.__setLang("zh");
+          document.querySelectorAll(".lang-btn").forEach((b) => {
+            b.classList.toggle("is-active", b.dataset.lang === "zh");
+          });
+        }
+      } catch (_) { /* ignore */ }
+    }
+
     // Try exact match on label or ISO3 code first
     let match = lifeExpectancy.find(
       (item) => item.iso3 === code || item.label.toLowerCase() === name.toLowerCase()
@@ -240,11 +195,47 @@ async function detectCountryByIP() {
     if (match && match.iso3 !== "WLD") {
       elements.countrySelect.value = match.label;
     } else {
-      // Leave as default "Select a country"
+      // Leave as default
       elements.countrySelect.value = "";
     }
   } catch {
     // Silently fail — user can pick manually
+  }
+}
+
+function setupLangSwitcher() {
+  document.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const lang = btn.dataset.lang;
+      if (window.__setLang) window.__setLang(lang);
+      document.querySelectorAll(".lang-btn").forEach((b) => b.classList.toggle("is-active", b === btn));
+    });
+  });
+
+  // Sync button state on page load
+  const currentLang = window.__getLang ? window.__getLang() : "en";
+  document.querySelectorAll(".lang-btn").forEach((b) => {
+    b.classList.toggle("is-active", b.dataset.lang === currentLang);
+  });
+}
+
+function handleLangChange() {
+  // Rebuild form dropdowns
+  seedCountryList();
+  seedBirthSelectors();
+  updateDayOptions();
+
+  // Re-render result if showing
+  if (state.result) {
+    const result = state.result;
+    const cName = window.__tCountry ? window.__tCountry(result.country.label) : result.country.label;
+  elements.countrySource.textContent = t("result.poster.source", { country: cName, year: result.country.sourceYear, expectancy: result.country.expectancyYears.toFixed(1) });
+    elements.progressBasis.textContent = buildProgressBasis(result);
+    elements.closingLine.textContent = gQuotes()[Math.floor(Math.random() * gQuotes().length)];
+    renderCalendar(result);
+    const currentAge = Math.floor(result.elapsedDays / DAYS_PER_YEAR);
+    const events = mapEventsToLife(result.birthDate, currentAge);
+    renderTimeline(events, result.birthDate, currentAge);
   }
 }
 
@@ -256,30 +247,35 @@ function init() {
   setupPointerParallax();
   setupSoundControls();
   setupAging();
+  setupLangSwitcher();
   bindEvents();
+  window.addEventListener("langchange", handleLangChange);
 }
 
 function seedCountryList() {
   const countries = lifeExpectancy.filter((item) => item.iso3 !== "WLD");
   const options = countries
-    .map((item) => `<option value="${item.label}">${item.label} · ${item.expectancyYears.toFixed(1)} yr</option>`)
+    .map((item) => {
+      const name = window.__tCountry ? window.__tCountry(item.label) : item.label;
+      return `<option value="${item.label}">${name} · ${item.expectancyYears.toFixed(1)} yr</option>`;
+    })
     .join("");
   elements.countrySelect.innerHTML =
-    `<option value="">Select a country or region</option>${options}<option value="Others">Others · world average</option>`;
+    `<option value="">${t("intro.form.countrySelect")}</option>${options}<option value="Others">${t("intro.form.countryOther")}</option>`;
 }
 
 function seedBirthSelectors() {
   const today = new Date();
   const currentYear = today.getFullYear();
   const earliestYear = currentYear - 120;
-  const yearOptions = ['<option value="">Year</option>'];
+  const yearOptions = [`<option value="">${t("intro.form.year")}</option>`];
   for (let year = currentYear; year >= earliestYear; year -= 1) {
     yearOptions.push(`<option value="${year}">${year}</option>`);
   }
 
   elements.birthYear.innerHTML = yearOptions.join("");
   elements.birthMonth.innerHTML =
-    '<option value="">Month</option>' +
+    `<option value="">${t("intro.form.month")}</option>` +
     Array.from({ length: 12 }, (_, index) => {
       const month = index + 1;
       return `<option value="${month}">${monthName(month)}</option>`;
@@ -299,11 +295,11 @@ function bindEvents() {
       elements.birthDay.value
     );
     if (!birthDate) {
-      showFormNote("Please enter a real date of birth.");
+      showFormNote(t("intro.form.errorDate"));
       return;
     }
     if (birthDate > startOfToday()) {
-      showFormNote("A future birth date cannot hold a past yet.");
+      showFormNote(t("intro.form.errorFuture"));
       return;
     }
 
@@ -367,7 +363,7 @@ function updateDayOptions() {
   const year = Number(elements.birthYear.value) || new Date().getFullYear();
   const month = Number(elements.birthMonth.value) || 1;
   const daysInMonth = new Date(year, month, 0).getDate();
-  const dayOptions = ['<option value="">Day</option>'];
+  const dayOptions = [`<option value="">${t("intro.form.day")}</option>`];
 
   for (let day = 1; day <= daysInMonth; day += 1) {
     dayOptions.push(`<option value="${day}">${day}</option>`);
@@ -391,7 +387,8 @@ function parseBirthDate(yearValue, monthValue, dayValue) {
 }
 
 function monthName(month) {
-  return new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(2000, month - 1, 1));
+  const locale = window.__getLang && window.__getLang() === "zh" ? "zh-CN" : "en-US";
+  return new Intl.DateTimeFormat(locale, { month: "short" }).format(new Date(2000, month - 1, 1));
 }
 
 function resolveCountry(input) {
@@ -454,11 +451,12 @@ function calculateLife(birthDate, country) {
 function renderResult(result) {
   elements.app.dataset.stage = "result";
   elements.app.dataset.revealed = "false";
-  elements.countrySource.textContent = `${result.country.label} · UN WPP ${result.country.sourceYear} · ${result.country.expectancyYears.toFixed(1)} years`;
+  const cName = window.__tCountry ? window.__tCountry(result.country.label) : result.country.label;
+  elements.countrySource.textContent = t("result.poster.source", { country: cName, year: result.country.sourceYear, expectancy: result.country.expectancyYears.toFixed(1) });
   elements.progressBasis.textContent = buildProgressBasis(result);
-  elements.closingLine.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+  elements.closingLine.textContent = gQuotes()[Math.floor(Math.random() * gQuotes().length)];
   elements.weekGrid.innerHTML = "";
-  elements.calendarCaption.textContent = "The wall is about to appear.";
+  elements.calendarCaption.textContent = t("result.calendar.captionLoading");
   animateNumbers(result);
   updateProgressBar(0);
 
@@ -475,7 +473,12 @@ function renderResult(result) {
 }
 
 function buildProgressBasis(result) {
-  return `This uses the UN WPP ${result.country.sourceYear} average life expectancy at birth for ${result.country.label}: ${result.country.expectancyYears.toFixed(1)} years. On that horizon, you have lived ${result.progressPercent.toFixed(1)}%.`;
+  return t("result.progress.basis", {
+    year: result.country.sourceYear,
+    country: result.country.label,
+    expectancy: result.country.expectancyYears.toFixed(1),
+    percent: result.progressPercent.toFixed(1),
+  });
 }
 
 function renderCalendar(result) {
@@ -487,7 +490,9 @@ function renderCalendar(result) {
 
   elements.weekGrid.innerHTML = "";
   elements.weekGrid.classList.toggle("is-thousand", isThousand);
-  elements.weeksModeButton.textContent = isThousand ? "return to life calendar" : "1000 weeks mode";
+  elements.weeksModeButton.textContent = isThousand
+    ? t("result.calendar.modeThousand")
+    : t("result.calendar.modeLife");
 
   for (let index = 0; index < total; index += 1) {
     const dot = document.createElement("span");
@@ -500,9 +505,13 @@ function renderCalendar(result) {
   }
 
   elements.weekGrid.appendChild(fragment);
+  const elapsedW = Math.min(result.elapsedWeeks, result.totalWeeks);
   elements.calendarCaption.textContent = isThousand
-    ? "A thousand future weeks. Not a prediction, just a smaller window to stand inside."
-    : `${result.totalWeeks.toLocaleString()} weeks estimated. ${Math.min(result.elapsedWeeks, result.totalWeeks).toLocaleString()} have already gone quiet.`;
+    ? t("result.calendar.captionThousand")
+    : t("result.calendar.captionLife", {
+        total: result.totalWeeks.toLocaleString(),
+        elapsed: elapsedW.toLocaleString(),
+      });
 }
 
 function animateNumbers(result) {
@@ -770,7 +779,7 @@ function closePosterPreview() {
 
 function createPosterCanvas(result) {
   const shareUrl = getShareUrl();
-  const quote = posterQuotes[Math.floor(Math.random() * posterQuotes.length)];
+  const quote = gPosterQuotes()[Math.floor(Math.random() * gPosterQuotes().length)];
   const canvas = document.createElement("canvas");
   const width = 1080;
   const height = 1920;
@@ -845,7 +854,7 @@ function drawPosterHeader(ctx, quote) {
   ctx.fillStyle = "rgba(244,239,225,0.52)";
   ctx.font = "24px Inter, Arial, sans-serif";
   ctx.letterSpacing = "3px";
-  ctx.fillText("LIFE PROGRESS BAR", 86, 112);
+  ctx.fillText(t("result.poster.brand"), 86, 112);
   ctx.letterSpacing = "0px";
 
   ctx.fillStyle = "rgba(244,239,225,0.92)";
@@ -865,14 +874,14 @@ function drawPosterProgress(ctx, result, width) {
 
   ctx.fillStyle = "rgba(244,239,225,0.64)";
   ctx.font = '28px Georgia, "Times New Roman", serif';
-  ctx.fillText("You have lived", barX, 350);
+  ctx.fillText(t("result.poster.youHaveLived"), barX, 350);
 
   ctx.fillStyle = "#fff2c9";
   fitCanvasText(ctx, `${percent}%`, barX, 500, width - 172, 160, 'Georgia, "Times New Roman", serif');
 
   ctx.fillStyle = "rgba(244,239,225,0.64)";
   ctx.font = '28px Georgia, "Times New Roman", serif';
-  ctx.fillText("of this statistical life.", barX, 555);
+  ctx.fillText(t("result.poster.ofThisLife"), barX, 555);
 
   // Progress bar
   ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
@@ -892,16 +901,17 @@ function drawPosterProgress(ctx, result, width) {
 
   ctx.fillStyle = "rgba(244, 239, 225, 0.38)";
   ctx.font = "15px Inter, Arial, sans-serif";
-  ctx.fillText("birth", barX, barY + 34);
+  ctx.fillText(t("result.poster.birth"), barX, barY + 34);
   ctx.textAlign = "right";
-  ctx.fillText("expected horizon", barX + barW, barY + 34);
+  ctx.fillText(t("result.poster.expectedHorizon"), barX + barW, barY + 34);
   ctx.textAlign = "left";
 
-  // Source info moved into progress section
+  // Source info
   ctx.fillStyle = "rgba(244,239,225,0.45)";
   ctx.font = "18px Inter, Arial, sans-serif";
+  const countryName = window.__tCountry ? window.__tCountry(result.country.label) : result.country.label;
   ctx.fillText(
-    `${result.country.label} · UN WPP ${result.country.sourceYear} · ${result.country.expectancyYears.toFixed(1)} years`,
+    t("result.poster.source", { country: countryName, year: result.country.sourceYear, expectancy: result.country.expectancyYears.toFixed(1) }),
     barX, barY + 72
   );
 
@@ -915,7 +925,7 @@ function drawPosterCalendarAndStats(ctx, result, width) {
   ctx.fillStyle = "rgba(244,239,225,0.52)";
   ctx.font = "16px Inter, Arial, sans-serif";
   ctx.letterSpacing = "2px";
-  ctx.fillText("LIFE CALENDAR", 86, 735);
+  ctx.fillText(t("result.poster.calendarEyebrow"), 86, 735);
   ctx.letterSpacing = "0px";
 
   // --- Left: full week grid ---
@@ -972,10 +982,12 @@ function drawPosterCalendarAndStats(ctx, result, width) {
   let cardY = 815;
   const cardH = 210;
 
+  const labels = [t("result.poster.statsLabels.0"), t("result.poster.statsLabels.1"), t("result.poster.statsLabels.2")];
+  const units = [t("result.poster.statsUnits.0"), t("result.poster.statsUnits.1"), t("result.poster.statsUnits.2")];
   const stats = [
-    { label: "you may have", value: result.remainingWeekends, unit: "weekends left." },
-    { label: "perhaps", value: result.remainingSunsets, unit: "sunsets left." },
-    { label: "roughly", value: result.remainingWorldCups, unit: "World Cups left." },
+    { label: labels[0], value: result.remainingWeekends, unit: units[0] },
+    { label: labels[1], value: result.remainingSunsets, unit: units[1] },
+    { label: labels[2], value: result.remainingWorldCups, unit: units[2] },
   ];
 
   stats.forEach((stat, idx) => {
@@ -1029,12 +1041,12 @@ function drawPosterFooter(ctx, result, shareUrl, width, height) {
 
   // "scan quietly" below URL
   ctx.font = "14px Inter, Arial, sans-serif";
-  ctx.fillText("scan quietly", width - 240, 1758);
+  ctx.fillText(t("result.poster.scanQuietly"), width - 240, 1758);
 
   // Invitation beside QR
   ctx.fillStyle = "rgba(244,239,225,0.72)";
   ctx.font = '24px Georgia, "Times New Roman", serif';
-  wrapCanvasText(ctx, "What's your number? Scan to see.", 86, 1640, 580, 36);
+  wrapCanvasText(ctx, t("result.poster.invitation"), 86, 1640, 580, 36);
 
   ctx.restore();
 }
@@ -1302,22 +1314,22 @@ async function sharePoster(dataUrl) {
     const file = new File([blob], "life-progress-poster.png", { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
-        title: "Life Progress Bar",
-        text: "A finite wall of weeks.",
+        title: t("result.share.title"),
+        text: t("result.share.text"),
         files: [file],
       });
       return;
     }
     if (navigator.share) {
       await navigator.share({
-        title: "Life Progress Bar",
-        text: "A finite wall of weeks.",
+        title: t("result.share.title"),
+        text: t("result.share.text"),
       });
       return;
     }
-    elements.posterShareNote.textContent = "Sharing is not available in this browser. You can download the poster instead.";
+    elements.posterShareNote.textContent = t("result.share.errorNotAvailable");
   } catch {
-    elements.posterShareNote.textContent = "Sharing was cancelled or unavailable. The poster is still ready to download.";
+    elements.posterShareNote.textContent = t("result.share.errorCancelled");
   }
 }
 
