@@ -254,6 +254,11 @@ select:focus {
   background-color: rgba(0, 0, 0, 0.38);
 }
 
+select option {
+  color: #f4efe1;
+  background: #1a1a18;
+}
+
 .birth-selects {
   display: grid;
   grid-template-columns: 1fr 1fr 0.8fr;

@@ -46,15 +46,9 @@
           </label>
           <label>
             <span>Country or region</span>
-            <input
-              id="countryInput"
-              name="country"
-              list="countryList"
-              placeholder="China, Japan, United States, Others..."
-              autocomplete="off"
-              required
-            />
-            <datalist id="countryList"></datalist>
+            <select id="countrySelect" name="country" required>
+              <option value="">Detecting your location...</option>
+            </select>
           </label>
           <button class="primary-action" type="submit">See my life progress</button>
           <p class="form-note" id="formNote" role="status"></p>

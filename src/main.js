@@ -110,8 +110,7 @@ const elements = {
   birthYear: document.querySelector("#birthYear"),
   birthMonth: document.querySelector("#birthMonth"),
   birthDay: document.querySelector("#birthDay"),
-  countryInput: document.querySelector("#countryInput"),
-  countryList: document.querySelector("#countryList"),
+  countrySelect: document.querySelector("#countrySelect"),
   formNote: document.querySelector("#formNote"),
   resultView: document.querySelector("#resultView"),
   countrySource: document.querySelector("#countrySource"),
@@ -221,9 +220,38 @@ function renderTimeline(events, birthDate, currentAge) {
   });
 }
 
+async function detectCountryByIP() {
+  try {
+    const resp = await fetch("https://ipapi.co/json/");
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const code = (data.country_code || "").toUpperCase();
+    const name = (data.country_name || "").trim();
+    // Try exact match on label or ISO3 code first
+    let match = lifeExpectancy.find(
+      (item) => item.iso3 === code || item.label.toLowerCase() === name.toLowerCase()
+    );
+    // Fallback: check aliases
+    if (!match) {
+      match = lifeExpectancy.find(
+        (item) => item.aliases.some((a) => a.toLowerCase() === name.toLowerCase())
+      );
+    }
+    if (match && match.iso3 !== "WLD") {
+      elements.countrySelect.value = match.label;
+    } else {
+      // Leave as default "Select a country"
+      elements.countrySelect.value = "";
+    }
+  } catch {
+    // Silently fail — user can pick manually
+  }
+}
+
 function init() {
   seedCountryList();
   seedBirthSelectors();
+  detectCountryByIP();
   setupParticles();
   setupPointerParallax();
   setupSoundControls();
@@ -232,11 +260,12 @@ function init() {
 }
 
 function seedCountryList() {
-  const countryOptions = lifeExpectancy
-    .filter((item) => item.iso3 !== "WLD")
-    .map((item) => `<option value="${item.label}"></option>`)
+  const countries = lifeExpectancy.filter((item) => item.iso3 !== "WLD");
+  const options = countries
+    .map((item) => `<option value="${item.label}">${item.label} · ${item.expectancyYears.toFixed(1)} yr</option>`)
     .join("");
-  elements.countryList.innerHTML = `${countryOptions}<option value="Others"></option>`;
+  elements.countrySelect.innerHTML =
+    `<option value="">Select a country or region</option>${options}<option value="Others">Others · world average</option>`;
 }
 
 function seedBirthSelectors() {
@@ -278,7 +307,7 @@ function bindEvents() {
       return;
     }
 
-    const country = resolveCountry(elements.countryInput.value);
+    const country = resolveCountry(elements.countrySelect.value);
     const result = calculateLife(birthDate, country);
     state.result = result;
     state.currentMode = "life";
@@ -322,6 +351,7 @@ function bindEvents() {
     setActiveButton("[data-sound]", document.querySelector('[data-sound="off"]'));
     elements.app.dataset.stage = "intro";
     elements.form.reset();
+    elements.countrySelect.selectedIndex = 0;
     updateDayOptions();
     elements.formNote.textContent = "";
     elements.birthYear.focus();
