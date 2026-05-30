@@ -180,6 +180,7 @@ async function detectCountryByIP() {
     const resp = await fetch("https://ipapi.co/json/");
     if (!resp.ok) return;
     const data = await resp.json();
+    if (data.error) return; // rate-limited or other API error
     const code = (data.country_code || "").toUpperCase();
     const name = (data.country_name || "").trim();
     state.countryCode = code;
