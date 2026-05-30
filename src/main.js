@@ -561,7 +561,6 @@ function renderCalendar(result) {
     if (index < elapsed) dot.classList.add("is-lived");
     if (index > elapsed) dot.classList.add("is-remaining");
     if (index === current) dot.classList.add("is-current");
-    dot.style.setProperty("--delay", `${Math.min(index * 2, 2400)}ms`);
     fragment.appendChild(dot);
   }
 

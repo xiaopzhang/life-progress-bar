@@ -511,12 +511,17 @@ select option {
   justify-content: center;
   padding: clamp(6px, 1.2vw, 12px) 0;
   overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .week-grid {
   display: grid;
   grid-template-columns: repeat(52, clamp(3px, 0.5vw, 6px));
   gap: clamp(1px, 0.18vw, 2.2px);
+  contain: layout style paint;
+  width: 100%;
+  max-width: 100%;
 }
 
 .week-dot {
@@ -526,29 +531,20 @@ select option {
   background: var(--glow);
   box-shadow: 0 0 10px var(--glow-soft);
   transform: scale(0.4);
-  animation:
-    dotArrive 900ms ease forwards,
-    remainGlow var(--glow-duration) ease-in-out infinite alternate;
-  animation-delay: var(--delay), calc(var(--delay) + 900ms);
+  animation: dotArrive 600ms ease forwards;
 }
 
 .week-dot.is-lived {
   background: rgba(244, 239, 225, 0.12);
   filter: blur(0.45px);
   box-shadow: none;
-  animation:
-    dotArrive 900ms ease forwards,
-    livedFade 1700ms ease forwards;
-  animation-delay: var(--delay), calc(var(--delay) + 900ms);
+  animation: dotArrive 600ms ease forwards, livedFade 1700ms ease forwards;
 }
 
 .week-dot.is-current {
   background: var(--text);
   box-shadow: 0 0 18px rgba(244, 239, 225, 0.55);
-  animation:
-    dotArrive 900ms ease forwards,
-    currentPulse 2800ms ease-in-out infinite;
-  animation-delay: var(--delay), calc(var(--delay) + 900ms);
+  animation: dotArrive 600ms ease forwards, currentPulse 2800ms ease-in-out infinite;
 }
 
 .week-grid.is-thousand {
