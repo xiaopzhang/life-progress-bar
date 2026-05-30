@@ -537,29 +537,20 @@ function renderCalendar(result) {
   const total = result.totalWeeks;
   const elapsed = result.elapsedWeeks;
   const current = Math.min(elapsed, total - 1);
-  const CHUNK = 400;
+  const fragment = document.createDocumentFragment();
 
   elements.weekGrid.innerHTML = "";
 
-  let index = 0;
-  function renderChunk() {
-    const fragment = document.createDocumentFragment();
-    const end = Math.min(index + CHUNK, total);
-    for (; index < end; index += 1) {
-      const dot = document.createElement("span");
-      dot.className = "week-dot";
-      if (index < elapsed) dot.classList.add("is-lived");
-      if (index > elapsed) dot.classList.add("is-remaining");
-      if (index === current) dot.classList.add("is-current");
-      fragment.appendChild(dot);
-    }
-    elements.weekGrid.appendChild(fragment);
-    if (index < total) {
-      requestAnimationFrame(renderChunk);
-    }
+  for (let index = 0; index < total; index += 1) {
+    const dot = document.createElement("span");
+    dot.className = "week-dot";
+    if (index < elapsed) dot.classList.add("is-lived");
+    if (index > elapsed) dot.classList.add("is-remaining");
+    if (index === current) dot.classList.add("is-current");
+    fragment.appendChild(dot);
   }
 
-  requestAnimationFrame(renderChunk);
+  elements.weekGrid.appendChild(fragment);
 
   elements.calendarCaption.textContent = t("result.calendar.captionLife", {
     total: total.toLocaleString(),
