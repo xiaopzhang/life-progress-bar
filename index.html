@@ -185,29 +185,47 @@
               <h3 id="donateTitle" data-i18n="donate.modal.title">Support this project</h3>
               <p data-i18n="donate.modal.subtitle">If this made you think, consider buying me a coffee.</p>
             </div>
-            <div class="donate-amounts">
-              <button class="donate-amount" data-amount="5" type="button">
-                <span class="donate-amount-label" data-i18n="donate.modal.amount5">$5 — One coffee</span>
-              </button>
-              <button class="donate-amount is-popular" data-amount="10" type="button">
-                <span class="donate-amount-label" data-i18n="donate.modal.amount10">$10 — Two coffees</span>
-                <span class="donate-badge" data-i18n="donate.modal.popular">Popular</span>
-              </button>
-              <button class="donate-amount" data-amount="25" type="button">
-                <span class="donate-amount-label" data-i18n="donate.modal.amount25">$25 — A bag of beans</span>
-              </button>
-              <div class="donate-custom" id="donateCustom">
-                <button class="donate-amount is-custom" data-amount="custom" type="button" id="donateCustomToggle">
-                  <span data-i18n="donate.modal.custom">💬 Custom amount</span>
+
+            <!-- PayPal section (non-China) -->
+            <div class="donate-paypal" id="donatePayPal">
+              <div class="donate-amounts">
+                <button class="donate-amount" data-amount="5" type="button">
+                  <span class="donate-amount-label" data-i18n="donate.modal.amount5">$5 — One coffee</span>
                 </button>
-                <div class="donate-custom-input" id="donateCustomInput" hidden>
-                  <span class="donate-currency">$</span>
-                  <input type="number" id="donateCustomAmount" data-i18n-attr="placeholder:donate.modal.customPlaceholder" placeholder="Enter amount" min="1" step="1" />
-                  <button class="donate-continue" id="donateContinue" type="button" data-i18n="donate.modal.continue">Continue</button>
+                <button class="donate-amount is-popular" data-amount="10" type="button">
+                  <span class="donate-amount-label" data-i18n="donate.modal.amount10">$10 — Two coffees</span>
+                  <span class="donate-badge" data-i18n="donate.modal.popular">Popular</span>
+                </button>
+                <button class="donate-amount" data-amount="25" type="button">
+                  <span class="donate-amount-label" data-i18n="donate.modal.amount25">$25 — A bag of beans</span>
+                </button>
+                <div class="donate-custom" id="donateCustom">
+                  <button class="donate-amount is-custom" data-amount="custom" type="button" id="donateCustomToggle">
+                    <span data-i18n="donate.modal.custom">💬 Custom amount</span>
+                  </button>
+                  <div class="donate-custom-input" id="donateCustomInput" hidden>
+                    <span class="donate-currency">$</span>
+                    <input type="number" id="donateCustomAmount" data-i18n-attr="placeholder:donate.modal.customPlaceholder" placeholder="Enter amount" min="1" step="1" />
+                    <button class="donate-continue" id="donateContinue" type="button" data-i18n="donate.modal.continue">Continue</button>
+                  </div>
                 </div>
               </div>
+              <p class="donate-footer-note" data-i18n="donate.modal.poweredBy">Powered by PayPal</p>
             </div>
-            <p class="donate-footer-note" data-i18n="donate.modal.poweredBy">Powered by PayPal</p>
+
+            <!-- China section (WeChat + Alipay QR) -->
+            <div class="donate-china" id="donateChina" hidden>
+              <div class="donate-qr-tabs">
+                <button class="donate-qr-tab is-active" data-tab="wechat" type="button" data-i18n="donate.modal.china.wechatTab">WeChat</button>
+                <button class="donate-qr-tab" data-tab="alipay" type="button" data-i18n="donate.modal.china.alipayTab">Alipay</button>
+              </div>
+              <div class="donate-qr-wrap">
+                <img class="donate-qr" id="qrWechat" src="src/wechat-qr.png" data-i18n-attr="alt:donate.modal.china.wechatAlt" alt="WeChat reward QR code" />
+                <img class="donate-qr" id="qrAlipay" src="src/alipay-qr.png" data-i18n-attr="alt:donate.modal.china.alipayAlt" alt="Alipay collection QR code" hidden />
+              </div>
+              <p class="donate-qr-tip" data-i18n="donate.modal.china.scanTip">Scan with WeChat or Alipay to donate</p>
+              <p class="donate-qr-suggested" data-i18n="donate.modal.china.suggested">Suggested: ¥6 / ¥18 / ¥66</p>
+            </div>
           </div>
         </div>
       </section>

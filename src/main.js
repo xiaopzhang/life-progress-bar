@@ -39,6 +39,7 @@ const state = {
   result: null,
   currentMode: "life",
   posterDataUrl: "",
+  countryCode: "",
   audio: {
     context: null,
     nodes: [],
@@ -85,6 +86,10 @@ const elements = {
   donateCustomInput: document.querySelector("#donateCustomInput"),
   donateCustomAmount: document.querySelector("#donateCustomAmount"),
   donateContinue: document.querySelector("#donateContinue"),
+  donatePayPal: document.querySelector("#donatePayPal"),
+  donateChina: document.querySelector("#donateChina"),
+  qrWechat: document.querySelector("#qrWechat"),
+  qrAlipay: document.querySelector("#qrAlipay"),
 };
 
 function mapEventsToLife(birthDate, currentAge) {
@@ -177,6 +182,7 @@ async function detectCountryByIP() {
     const data = await resp.json();
     const code = (data.country_code || "").toUpperCase();
     const name = (data.country_name || "").trim();
+    state.countryCode = code;
 
     // Auto-set language for Chinese users (unless URL param overrides)
     const urlParams = new URLSearchParams(window.location.search);
@@ -372,6 +378,12 @@ function bindEvents() {
   elements.donateCloseButton.addEventListener("click", closeDonateModal);
   elements.donateModal.addEventListener("click", (event) => {
     if (event.target === elements.donateModal) closeDonateModal();
+  });
+
+  // QR tab switching (event delegation)
+  elements.donateChina.addEventListener("click", (event) => {
+    const tab = event.target.closest(".donate-qr-tab");
+    if (tab) switchQrTab(tab.dataset.tab);
   });
 
   document.querySelectorAll(".donate-amount").forEach((btn) => {
@@ -827,10 +839,23 @@ function closePosterPreview() {
 
 // ---- Donation ----
 
+function isChinaUser() {
+  return state.countryCode === "CN";
+}
+
 function openDonateModal() {
-  elements.donateCustomInput.hidden = true;
-  elements.donateCustomToggle.hidden = false;
-  elements.donateCustomAmount.value = "";
+  if (isChinaUser()) {
+    elements.donatePayPal.hidden = true;
+    elements.donateChina.hidden = false;
+    // Reset to WeChat tab
+    switchQrTab("wechat");
+  } else {
+    elements.donatePayPal.hidden = false;
+    elements.donateChina.hidden = true;
+    elements.donateCustomInput.hidden = true;
+    elements.donateCustomToggle.hidden = false;
+    elements.donateCustomAmount.value = "";
+  }
   elements.donateModal.hidden = false;
   elements.donateCloseButton.focus();
 }
@@ -843,6 +868,14 @@ function toggleCustomAmount() {
   elements.donateCustomToggle.hidden = true;
   elements.donateCustomInput.hidden = false;
   elements.donateCustomAmount.focus();
+}
+
+function switchQrTab(tab) {
+  document.querySelectorAll(".donate-qr-tab").forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.tab === tab);
+  });
+  elements.qrWechat.hidden = tab !== "wechat";
+  elements.qrAlipay.hidden = tab !== "alipay";
 }
 
 function openPayPal(amount) {

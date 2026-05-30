@@ -123,6 +123,14 @@ const translations = {
         popular: "Popular",
         poweredBy: "Powered by PayPal",
         close: "Close",
+        china: {
+          wechatTab: "WeChat",
+          alipayTab: "Alipay",
+          scanTip: "Scan with WeChat or Alipay to donate",
+          suggested: "Suggested: ¥6 / ¥18 / ¥66",
+          wechatAlt: "WeChat reward QR code",
+          alipayAlt: "Alipay collection QR code",
+        },
       },
     },
     quotes: [
@@ -328,6 +336,14 @@ const translations = {
         popular: "热门",
         poweredBy: "由 PayPal 提供支持",
         close: "关闭",
+        china: {
+          wechatTab: "微信赞赏",
+          alipayTab: "支付宝",
+          scanTip: "用微信或支付宝扫码打赏",
+          suggested: "建议金额：¥6 / ¥18 / ¥66",
+          wechatAlt: "微信赞赏码",
+          alipayAlt: "支付宝收款码",
+        },
       },
     },
     quotes: [
