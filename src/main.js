@@ -2,6 +2,9 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const DAYS_PER_YEAR = 365.2425;
 const WEEKS_PER_YEAR = 52;
 
+// PayPal.Me — replace with your username
+const PAYPAL_USERNAME = "chizinho";
+
 const lifeExpectancy = [
   { label: "World", iso3: "WLD", expectancyYears: 73.3, sourceYear: 2024, aliases: ["global", "earth", "other", "others"] },
   { label: "China", iso3: "CHN", expectancyYears: 78.2, sourceYear: 2024, aliases: ["prc", "mainland china"] },
@@ -74,6 +77,14 @@ const elements = {
   posterCloseButton: document.querySelector("#posterCloseButton"),
   posterShareNote: document.querySelector("#posterShareNote"),
   restartButton: document.querySelector("#restartButton"),
+  // Donation
+  donateButton: document.querySelector("#donateButton"),
+  donateModal: document.querySelector("#donateModal"),
+  donateCloseButton: document.querySelector("#donateCloseButton"),
+  donateCustomToggle: document.querySelector("#donateCustomToggle"),
+  donateCustomInput: document.querySelector("#donateCustomInput"),
+  donateCustomAmount: document.querySelector("#donateCustomAmount"),
+  donateContinue: document.querySelector("#donateContinue"),
 };
 
 function mapEventsToLife(birthDate, currentAge) {
@@ -339,7 +350,10 @@ function bindEvents() {
     if (event.target === elements.posterModal) closePosterPreview();
   });
   window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !elements.posterModal.hidden) closePosterPreview();
+    if (event.key === "Escape") {
+      if (!elements.posterModal.hidden) closePosterPreview();
+      if (!elements.donateModal.hidden) closeDonateModal();
+    }
   });
 
   elements.restartButton.addEventListener("click", () => {
@@ -351,6 +365,40 @@ function bindEvents() {
     updateDayOptions();
     elements.formNote.textContent = "";
     elements.birthYear.focus();
+  });
+
+  // Donation
+  elements.donateButton.addEventListener("click", openDonateModal);
+  elements.donateCloseButton.addEventListener("click", closeDonateModal);
+  elements.donateModal.addEventListener("click", (event) => {
+    if (event.target === elements.donateModal) closeDonateModal();
+  });
+
+  document.querySelectorAll(".donate-amount").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const amount = btn.dataset.amount;
+      if (amount === "custom") {
+        toggleCustomAmount();
+      } else {
+        openPayPal(amount);
+      }
+    });
+  });
+
+  elements.donateContinue.addEventListener("click", () => {
+    const val = elements.donateCustomAmount.value;
+    if (val && Number(val) > 0) {
+      openPayPal(val);
+    }
+  });
+
+  elements.donateCustomAmount.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      const val = elements.donateCustomAmount.value;
+      if (val && Number(val) > 0) {
+        openPayPal(val);
+      }
+    }
   });
 }
 
@@ -775,6 +823,38 @@ function previewPoster(result) {
 
 function closePosterPreview() {
   elements.posterModal.hidden = true;
+}
+
+// ---- Donation ----
+
+function openDonateModal() {
+  elements.donateCustomInput.hidden = true;
+  elements.donateCustomToggle.hidden = false;
+  elements.donateCustomAmount.value = "";
+  elements.donateModal.hidden = false;
+  elements.donateCloseButton.focus();
+}
+
+function closeDonateModal() {
+  elements.donateModal.hidden = true;
+}
+
+function toggleCustomAmount() {
+  elements.donateCustomToggle.hidden = true;
+  elements.donateCustomInput.hidden = false;
+  elements.donateCustomAmount.focus();
+}
+
+function openPayPal(amount) {
+  const url = `https://paypal.me/${PAYPAL_USERNAME}/${amount}`;
+  const a = document.createElement("a");
+  a.href = url;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function createPosterCanvas(result) {

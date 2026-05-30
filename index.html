@@ -152,6 +152,7 @@
           <div class="footer-actions">
             <button class="ghost-action" id="posterButton" type="button" data-i18n="result.poster.modal.eyebrow">Generate share poster</button>
             <button class="text-action" id="restartButton" type="button" data-i18n="intro.form.restart">Start again</button>
+            <button class="donate-action" id="donateButton" type="button" data-i18n="donate.button">☕ Buy me a coffee</button>
           </div>
           <p class="source-note" data-i18n="result.closing.sourceNote">
             Life expectancy uses UN World Population Prospects 2024 / UNData, indicator:
@@ -173,6 +174,40 @@
               <button class="text-action" id="posterCloseButton" type="button" data-i18n="result.poster.modal.close">Close</button>
             </div>
             <p class="source-note" id="posterShareNote"></p>
+          </div>
+        </div>
+
+        <div class="donate-modal" id="donateModal" hidden role="dialog" aria-modal="true" aria-labelledby="donateTitle">
+          <div class="donate-panel">
+            <button class="donate-close" id="donateCloseButton" type="button" data-i18n-attr="aria-label:donate.modal.close" aria-label="Close">&times;</button>
+            <div class="donate-header">
+              <span class="donate-icon">☕</span>
+              <h3 id="donateTitle" data-i18n="donate.modal.title">Support this project</h3>
+              <p data-i18n="donate.modal.subtitle">If this made you think, consider buying me a coffee.</p>
+            </div>
+            <div class="donate-amounts">
+              <button class="donate-amount" data-amount="5" type="button">
+                <span class="donate-amount-label" data-i18n="donate.modal.amount5">$5 — One coffee</span>
+              </button>
+              <button class="donate-amount is-popular" data-amount="10" type="button">
+                <span class="donate-amount-label" data-i18n="donate.modal.amount10">$10 — Two coffees</span>
+                <span class="donate-badge" data-i18n="donate.modal.popular">Popular</span>
+              </button>
+              <button class="donate-amount" data-amount="25" type="button">
+                <span class="donate-amount-label" data-i18n="donate.modal.amount25">$25 — A bag of beans</span>
+              </button>
+              <div class="donate-custom" id="donateCustom">
+                <button class="donate-amount is-custom" data-amount="custom" type="button" id="donateCustomToggle">
+                  <span data-i18n="donate.modal.custom">💬 Custom amount</span>
+                </button>
+                <div class="donate-custom-input" id="donateCustomInput" hidden>
+                  <span class="donate-currency">$</span>
+                  <input type="number" id="donateCustomAmount" data-i18n-attr="placeholder:donate.modal.customPlaceholder" placeholder="Enter amount" min="1" step="1" />
+                  <button class="donate-continue" id="donateContinue" type="button" data-i18n="donate.modal.continue">Continue</button>
+                </div>
+              </div>
+            </div>
+            <p class="donate-footer-note" data-i18n="donate.modal.poweredBy">Powered by PayPal</p>
           </div>
         </div>
       </section>
