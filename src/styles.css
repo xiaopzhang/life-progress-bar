@@ -543,9 +543,7 @@ select option {
 .week-dot.is-current {
   background: var(--text);
   box-shadow: 0 0 18px rgba(244, 239, 225, 0.55);
-  animation: dotArrive 600ms ease forwards, currentPulse 2800ms ease-in-out infinite;
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  animation: dotArrive 600ms ease forwards;
 }
 
 .calendar-caption {
@@ -1228,13 +1226,6 @@ blockquote {
 
   to {
     opacity: 0.92;
-  }
-}
-
-@keyframes currentPulse {
-  50% {
-    opacity: 0.55;
-    transform: scale(0.82);
   }
 }
 
