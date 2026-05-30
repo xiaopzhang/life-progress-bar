@@ -40,10 +40,7 @@ const translations = {
         eyebrow: "Life Calendar",
         title: "Each dot is one week.",
         ariaLabel: "Each dot represents one week of life",
-        modeLife: "1000 weeks mode",
-        modeThousand: "return to life calendar",
         captionLoading: "The wall is about to appear.",
-        captionThousand: "A thousand future weeks. Not a prediction, just a smaller window to stand inside.",
         captionLife: "{total} weeks estimated. {elapsed} have already gone quiet.",
       },
       progress: {
@@ -253,10 +250,7 @@ const translations = {
         eyebrow: "生命日历",
         title: "每个点是一周。",
         ariaLabel: "每个点代表一周的生命",
-        modeLife: "1000 周模式",
-        modeThousand: "返回生命日历",
         captionLoading: "这面墙即将出现。",
-        captionThousand: "一千个未来的周。不是预测，只是一扇更小的窗，站在里面。",
         captionLife: "估计 {total} 周。其中 {elapsed} 周已经安静地过去了。",
       },
       progress: {

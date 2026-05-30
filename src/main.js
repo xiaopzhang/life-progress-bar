@@ -37,7 +37,6 @@ function personalContext(age) {
 
 const state = {
   result: null,
-  currentMode: "life",
   posterDataUrl: "",
   countryCode: "",
   audio: {
@@ -62,7 +61,6 @@ const elements = {
   progressBasis: document.querySelector("#progressBasis"),
   weekGrid: document.querySelector("#weekGrid"),
   calendarCaption: document.querySelector("#calendarCaption"),
-  weeksModeButton: document.querySelector("#weeksModeButton"),
   weekendsLeft: document.querySelector("#weekendsLeft"),
   sunsetsLeft: document.querySelector("#sunsetsLeft"),
   summersLeft: document.querySelector("#summersLeft"),
@@ -324,14 +322,7 @@ function bindEvents() {
     const country = resolveCountry(elements.countrySelect.value);
     const result = calculateLife(birthDate, country);
     state.result = result;
-    state.currentMode = "life";
     renderResult(result);
-  });
-
-  elements.weeksModeButton.addEventListener("click", () => {
-    if (!state.result) return;
-    state.currentMode = state.currentMode === "life" ? "thousand" : "life";
-    renderCalendar(state.result);
   });
 
   elements.posterButton.addEventListener("click", () => {
@@ -543,17 +534,12 @@ function buildProgressBasis(result) {
 }
 
 function renderCalendar(result) {
-  const isThousand = state.currentMode === "thousand";
-  const total = isThousand ? 1000 : result.totalWeeks;
-  const elapsed = isThousand ? 0 : result.elapsedWeeks;
-  const current = isThousand ? -1 : Math.min(result.elapsedWeeks, total - 1);
+  const total = result.totalWeeks;
+  const elapsed = result.elapsedWeeks;
+  const current = Math.min(elapsed, total - 1);
   const fragment = document.createDocumentFragment();
 
   elements.weekGrid.innerHTML = "";
-  elements.weekGrid.classList.toggle("is-thousand", isThousand);
-  elements.weeksModeButton.textContent = isThousand
-    ? t("result.calendar.modeThousand")
-    : t("result.calendar.modeLife");
 
   for (let index = 0; index < total; index += 1) {
     const dot = document.createElement("span");
@@ -565,13 +551,10 @@ function renderCalendar(result) {
   }
 
   elements.weekGrid.appendChild(fragment);
-  const elapsedW = Math.min(result.elapsedWeeks, result.totalWeeks);
-  elements.calendarCaption.textContent = isThousand
-    ? t("result.calendar.captionThousand")
-    : t("result.calendar.captionLife", {
-        total: result.totalWeeks.toLocaleString(),
-        elapsed: elapsedW.toLocaleString(),
-      });
+  elements.calendarCaption.textContent = t("result.calendar.captionLife", {
+    total: total.toLocaleString(),
+    elapsed: Math.min(elapsed, total).toLocaleString(),
+  });
 }
 
 function animateNumbers(result) {

@@ -547,10 +547,6 @@ select option {
   animation: dotArrive 600ms ease forwards, currentPulse 2800ms ease-in-out infinite;
 }
 
-.week-grid.is-thousand {
-  grid-template-columns: repeat(40, clamp(3px, 0.55vw, 6px));
-}
-
 .calendar-caption {
   margin: 0;
   color: var(--muted);
@@ -1381,10 +1377,6 @@ blockquote {
   .week-grid {
     grid-template-columns: repeat(52, clamp(2.6px, 1.15vw, 4.5px));
     gap: 1.25px;
-  }
-
-  .week-grid.is-thousand {
-    grid-template-columns: repeat(32, clamp(2.8px, 1.28vw, 4.8px));
   }
 
   .metrics {
