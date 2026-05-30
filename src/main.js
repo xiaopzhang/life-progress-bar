@@ -551,7 +551,6 @@ function renderCalendar(result) {
   }
 
   elements.weekGrid.appendChild(fragment);
-
   elements.calendarCaption.textContent = t("result.calendar.captionLife", {
     total: total.toLocaleString(),
     elapsed: Math.min(elapsed, total).toLocaleString(),
