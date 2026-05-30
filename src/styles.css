@@ -519,7 +519,6 @@ select option {
   display: grid;
   grid-template-columns: repeat(52, clamp(3px, 0.5vw, 6px));
   gap: clamp(1px, 0.18vw, 2.2px);
-  contain: layout style paint;
   width: 100%;
   max-width: 100%;
 }
@@ -545,6 +544,8 @@ select option {
   background: var(--text);
   box-shadow: 0 0 18px rgba(244, 239, 225, 0.55);
   animation: dotArrive 600ms ease forwards, currentPulse 2800ms ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .calendar-caption {
