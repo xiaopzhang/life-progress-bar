@@ -1,10 +1,11 @@
 const translations = {
   en: {
     meta: {
-      title: "Life Progress Bar",
-      description: "Life Progress Bar is an immersive life calendar that lets you see time as a finite wall of weeks.",
-      ogTitle: "Life Progress Bar",
-      ogDesc: "If life were a countdown, how much would you have left?",
+      title: "Life Progress Bar | Visualize Your Life Calendar in Weeks",
+      description: "Life Progress Bar is a bilingual life calendar that visualizes your life expectancy as a wall of weeks, with progress, remaining moments, and world history context.",
+      ogTitle: "Life Progress Bar | Visualize Your Life Calendar in Weeks",
+      ogDesc: "See your life expectancy as a finite wall of weeks, with a quiet progress view of time lived and moments that may remain.",
+      ogImageAlt: "Life Progress Bar social preview with a wall of weekly life calendar dots.",
     },
     intro: {
       eyebrow: "Life Progress Bar",
@@ -211,10 +212,11 @@ const translations = {
 
   zh: {
     meta: {
-      title: "人生进度条",
-      description: "人生进度条是一个沉浸式生命日历，让你看到时间是一面有限的周之墙。",
-      ogTitle: "人生进度条",
-      ogDesc: "如果生命是一场倒计时，你还剩多少？",
+      title: "人生进度条 | 用周历看见生命进度",
+      description: "人生进度条是一个中英双语生命日历，用联合国 WPP 2024 预期寿命估算，把你的人生可视化为一面有限的周之墙。",
+      ogTitle: "人生进度条 | 用周历看见生命进度",
+      ogDesc: "如果生命是一面有限的周之墙，看看你已经走过多少，又可能还剩多少个周末、夏天和日落。",
+      ogImageAlt: "Life Progress Bar social preview with a wall of weekly life calendar dots.",
     },
     intro: {
       eyebrow: "人生进度条",
@@ -470,6 +472,13 @@ function hydrateDOM() {
   // Update <title>
   const title = t("meta.title");
   if (title && title !== "meta.title") document.title = title;
+  updateSeoMetadata();
+}
+
+function updateSeoMetadata() {
+  const locale = activeLang === "zh" ? "zh_CN" : "en_US";
+  const localeMeta = document.querySelector("meta[data-seo-locale]");
+  if (localeMeta) localeMeta.setAttribute("content", locale);
 }
 
 function initI18n() {

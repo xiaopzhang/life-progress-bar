@@ -3,11 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" data-i18n="meta.description" content="Life Progress Bar is an immersive life calendar that lets you see time as a finite wall of weeks." />
+    <title>Life Progress Bar | Visualize Your Life Calendar in Weeks</title>
+    <meta name="description" data-i18n="meta.description" content="Life Progress Bar is a bilingual life calendar that visualizes your life expectancy as a wall of weeks, with progress, remaining moments, and world history context." />
     <meta name="theme-color" content="#070707" />
-    <meta property="og:title" data-i18n="meta.ogTitle" content="Life Progress Bar" />
-    <meta property="og:description" data-i18n="meta.ogDesc" content="If life were a countdown, how much would you have left?" />
-    <title>Life Progress Bar</title>
+    <link rel="canonical" href="https://lifeprogressbar.tickletickle.space/" />
+    <link rel="alternate" hreflang="en" href="https://lifeprogressbar.tickletickle.space/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://lifeprogressbar.tickletickle.space/?lang=zh" />
+    <link rel="alternate" hreflang="x-default" href="https://lifeprogressbar.tickletickle.space/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lifeprogressbar.tickletickle.space/" />
+    <meta property="og:site_name" content="Life Progress Bar" />
+    <meta property="og:title" data-i18n="meta.ogTitle" content="Life Progress Bar | Visualize Your Life Calendar in Weeks" />
+    <meta property="og:description" data-i18n="meta.ogDesc" content="See your life expectancy as a finite wall of weeks, with a quiet progress view of time lived and moments that may remain." />
+    <meta property="og:image" content="https://lifeprogressbar.tickletickle.space/src/og-image.png" />
+    <meta property="og:image:secure_url" content="https://lifeprogressbar.tickletickle.space/src/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" data-i18n="meta.ogImageAlt" content="Life Progress Bar social preview with a wall of weekly life calendar dots." />
+    <meta property="og:locale" content="en_US" data-seo-locale />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://lifeprogressbar.tickletickle.space/" />
+    <meta name="twitter:title" data-i18n="meta.ogTitle" content="Life Progress Bar | Visualize Your Life Calendar in Weeks" />
+    <meta name="twitter:description" data-i18n="meta.ogDesc" content="See your life expectancy as a finite wall of weeks, with a quiet progress view of time lived and moments that may remain." />
+    <meta name="twitter:image" content="https://lifeprogressbar.tickletickle.space/src/og-image.png" />
+    <meta name="twitter:image:alt" data-i18n="meta.ogImageAlt" content="Life Progress Bar social preview with a wall of weekly life calendar dots." />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Life Progress Bar",
+        "alternateName": "人生进度条",
+        "url": "https://lifeprogressbar.tickletickle.space/",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any",
+        "inLanguage": ["en", "zh-CN"],
+        "description": "A bilingual life calendar that visualizes life expectancy as a finite wall of weeks, using UN World Population Prospects 2024 life expectancy estimates as a contemplative reference.",
+        "image": "https://lifeprogressbar.tickletickle.space/src/og-image.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KR7HPX595N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-KR7HPX595N");
+    </script>
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
@@ -232,5 +281,16 @@
 
     <script src="./src/i18n.js"></script>
     <script type="module" src="./src/main.js"></script>
+    <script>
+      window.va = window.va || function (...params) {
+        (window.vaq = window.vaq || []).push(params);
+      };
+    </script>
+    <script
+      defer
+      src="/_vercel/insights/script.js"
+      data-sdkn="@vercel/analytics"
+      data-sdkv="2.0.1"
+    ></script>
   </body>
 </html>
